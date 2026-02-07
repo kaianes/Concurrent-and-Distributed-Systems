@@ -84,3 +84,13 @@ Only one thread can execute the critical section at a time.
   * fairness policies
   * interruptible locks
 
+
+## Buffer
+
+* A buffer is a temporary storage area for data.
+* It is used to hold data while it is being transferred from one place to another.
+* In concurrent programming, a buffer can be shared between threads.
+* A common example is the **producer-consumer problem**, where one thread produces data and another thread consumes it.
+* A  producer can't save data in the buffer if it's full, and a consumer can't take data from the buffer if it's empty.
+* For these types of situations, Java provides the `wait()`, `notify()`, and `notifyAll()` methods implemented in the Object class. A thread can call the wait() method inside a synchronized block of code.
+

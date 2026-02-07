@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/dscrimie/OneDrive%20-%20University%20of%20Bradford/teaching/modules/COS6012-B%20Concurrent%20and%20Distributed%20Systems%202025-26/week%203/cds.lab3/src/car/park/solution1/Departures.java</file>
+            <file>file:/C:/Users/dscrimie/OneDrive%20-%20University%20of%20Bradford/teaching/modules/COS6012-B%20Concurrent%20and%20Distributed%20Systems%202025-26/week%203/cds.lab3/src/photo/booth/PhotoBooth.java</file>
+            <file>file:/C:/Users/dscrimie/OneDrive%20-%20University%20of%20Bradford/teaching/modules/COS6012-B%20Concurrent%20and%20Distributed%20Systems%202025-26/week%203/cds.lab3/src/car/park/solution2/CarParkControl.java</file>
+            <file>file:/C:/Users/dscrimie/OneDrive%20-%20University%20of%20Bradford/teaching/modules/COS6012-B%20Concurrent%20and%20Distributed%20Systems%202025-26/week%203/cds.lab3/src/illegal/monitor/state/exception/example/HelperClass.java</file>
+            <file>file:/C:/Users/dscrimie/OneDrive%20-%20University%20of%20Bradford/teaching/modules/COS6012-B%20Concurrent%20and%20Distributed%20Systems%202025-26/week%203/cds.lab3/src/bike/rental/BikesRentalMain.java</file>
+            <file>file:/C:/Users/dscrimie/OneDrive%20-%20University%20of%20Bradford/teaching/modules/COS6012-B%20Concurrent%20and%20Distributed%20Systems%202025-26/week%203/cds.lab3/src/car/park/solution1/CarParkControl.java</file>
+            <file>file:/C:/Users/dscrimie/OneDrive%20-%20University%20of%20Bradford/teaching/modules/COS6012-B%20Concurrent%20and%20Distributed%20Systems%202025-26/week%203/cds.lab3/src/photo/booth/Client.java</file>
+            <file>file:/C:/Users/dscrimie/OneDrive%20-%20University%20of%20Bradford/teaching/modules/COS6012-B%20Concurrent%20and%20Distributed%20Systems%202025-26/week%203/cds.lab3/src/grocery/shop/Tills.java</file>
+            <file>file:/C:/Users/dscrimie/OneDrive%20-%20University%20of%20Bradford/teaching/modules/COS6012-B%20Concurrent%20and%20Distributed%20Systems%202025-26/week%203/cds.lab3/src/photo/booth/PhotoBoothMain.java</file>
+            <file>file:/C:/Users/dscrimie/OneDrive%20-%20University%20of%20Bradford/teaching/modules/COS6012-B%20Concurrent%20and%20Distributed%20Systems%202025-26/week%203/cds.lab3/src/bike/rental/BikeRental.java</file>
+            <file>file:/C:/Users/dscrimie/OneDrive%20-%20University%20of%20Bradford/teaching/modules/COS6012-B%20Concurrent%20and%20Distributed%20Systems%202025-26/week%203/cds.lab3/src/print/queue/PrintQueue.java</file>
+            <file>file:/C:/Users/dscrimie/OneDrive%20-%20University%20of%20Bradford/teaching/modules/COS6012-B%20Concurrent%20and%20Distributed%20Systems%202025-26/week%203/cds.lab3/src/illegal/monitor/state/exception/example/RunningExample.java</file>
+            <file>file:/C:/Users/dscrimie/OneDrive%20-%20University%20of%20Bradford/teaching/modules/COS6012-B%20Concurrent%20and%20Distributed%20Systems%202025-26/week%203/cds.lab3/src/print/queue/Job.java</file>
+            <file>file:/C:/Users/dscrimie/OneDrive%20-%20University%20of%20Bradford/teaching/modules/COS6012-B%20Concurrent%20and%20Distributed%20Systems%202025-26/week%203/cds.lab3/src/car/park/solution1/Arrivals.java</file>
+            <file>file:/C:/Users/dscrimie/OneDrive%20-%20University%20of%20Bradford/teaching/modules/COS6012-B%20Concurrent%20and%20Distributed%20Systems%202025-26/week%203/cds.lab3/src/car/park/solution2/MainCarPark2.java</file>
+            <file>file:/C:/Users/dscrimie/OneDrive%20-%20University%20of%20Bradford/teaching/modules/COS6012-B%20Concurrent%20and%20Distributed%20Systems%202025-26/week%203/cds.lab3/src/car/park/solution1/MainCarPark1.java</file>
+            <file>file:/C:/Users/dscrimie/OneDrive%20-%20University%20of%20Bradford/teaching/modules/COS6012-B%20Concurrent%20and%20Distributed%20Systems%202025-26/week%203/cds.lab3/src/grocery/shop/GroceryShopMain.java</file>
+            <file>file:/C:/Users/dscrimie/OneDrive%20-%20University%20of%20Bradford/teaching/modules/COS6012-B%20Concurrent%20and%20Distributed%20Systems%202025-26/week%203/cds.lab3/src/bike/rental/Client.java</file>
+            <file>file:/C:/Users/dscrimie/OneDrive%20-%20University%20of%20Bradford/teaching/modules/COS6012-B%20Concurrent%20and%20Distributed%20Systems%202025-26/week%203/cds.lab3/src/car/park/CarParkControl.java</file>
+            <file>file:/C:/Users/dscrimie/OneDrive%20-%20University%20of%20Bradford/teaching/modules/COS6012-B%20Concurrent%20and%20Distributed%20Systems%202025-26/week%203/cds.lab3/src/car/park/solution2/MyCar.java</file>
+            <file>file:/C:/Users/dscrimie/OneDrive%20-%20University%20of%20Bradford/teaching/modules/COS6012-B%20Concurrent%20and%20Distributed%20Systems%202025-26/week%203/cds.lab3/src/illegal/monitor/state/exception/example/IllegalMonitorStateNotifyExample.java</file>
+            <file>file:/C:/Users/dscrimie/OneDrive%20-%20University%20of%20Bradford/teaching/modules/COS6012-B%20Concurrent%20and%20Distributed%20Systems%202025-26/week%203/cds.lab3/src/illegal/monitor/state/exception/example/IllegalMonitorStateWaitExample.java</file>
+            <file>file:/C:/Users/dscrimie/OneDrive%20-%20University%20of%20Bradford/teaching/modules/COS6012-B%20Concurrent%20and%20Distributed%20Systems%202025-26/week%203/cds.lab3/src/print/queue/Main.java</file>
+        </group>
+    </open-files>
+</project-private>
