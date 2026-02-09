@@ -36,7 +36,7 @@ public class PrintQueue {
 	 * Constructor of the class. It initializes the three objects
 	 */
 	public PrintQueue(){
-		semaphore=new Semaphore(3);
+		semaphore=new Semaphore(6);
 		freePrinters=new boolean[3];
 		for (int i=0; i<3; i++){
 			freePrinters[i]=true;

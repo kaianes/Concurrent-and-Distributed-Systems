@@ -3,6 +3,12 @@ package bike.rental;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+ /* 
+    A semaphore is like a bike rental place, with a fixed number of bikes. If a 
+    bike is available the client can take it, otherwise must wait. When a client 
+    returns their bike then someone else can take it.
+ */
+
 public class BikeRental {
 
     private final Semaphore semaphore;
