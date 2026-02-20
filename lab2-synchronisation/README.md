@@ -45,6 +45,10 @@ synchronized void increment() {
 ```
 Only one thread can execute the `increment` method at a time.
 
+**Note**: The `synchronized` keyword can be used to synchronize on an object or a class. When synchronizing on an object, the lock is associated with that specific instance. When synchronizing on a class, the lock is associated with the class itself, meaning that all instances of that class will share the same lock.
+
+![SynchronizedxLock](../images/SynchronizedxLoc.png)
+
 ## `Lock` interface
 Aqui vai em **inglês, bem simples** 👇
 
@@ -95,3 +99,32 @@ Only one thread can execute the critical section at a time.
 * A  producer can't save data in the buffer if it's full, and a consumer can't take data from the buffer if it's empty.
 * For these types of situations, Java provides the `wait()`, `notify()`, and `notifyAll()` methods implemented in the Object class. A thread can call the wait() method inside a synchronized block of code.
 
+## Witch to choose?
+
+| Feature                         | `synchronized`    | `Lock`              |
+| ------------------------------- | ----------------- | ------------------- |
+| Type                            | Keyword           | Class               |
+| Lock Release                    | Automatic         | Manual              |
+| Flexibility                     | Low               | High                |
+| Try to acquire without blocking | ❌                 | ✅ `tryLock()`       |
+| Timeout support                 | ❌                 | ✅                   |
+| Interruptible lock              | ❌                 | ✅                   |
+| Fairness option                 | ❌                 | ✅ (optional)        |
+| Condition variables             | `wait()/notify()` | `Condition` objects |
+
+- **Use `synchronized` when:**
+
+* You need simple mutual exclusion
+* You want cleaner, safer code
+* You don’t need advanced control
+* You don’t need fairness or timeout
+
+This covers most common cases.
+
+- **Use `Lock` when:**
+
+* You need `tryLock()`
+* You need timeouts
+* You need fairness
+* You need interruptible locking
+* You need multiple condition variables
