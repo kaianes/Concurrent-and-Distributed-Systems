@@ -13,6 +13,7 @@
   * the `synchronized` keyword
   * the `Lock` interface and its implementations
 
+![Synchronisation](../images/Synchronisation.png)
 
 ## `synchronized` keyword
 

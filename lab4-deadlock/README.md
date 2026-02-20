@@ -4,6 +4,8 @@
 - Each thread is **waiting for another thread to release a resource**
 - Because everyone is waiting, **no progress is made**
 
+![Deadlock](../images/Deadlock.png)
+
 ## Why does deadlock happen?
 - **Resource contention**: Multiple threads need the same resources
 - **Circular wait**: Each thread is waiting for a resource held by another thread
