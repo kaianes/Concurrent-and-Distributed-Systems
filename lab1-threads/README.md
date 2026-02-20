@@ -2,6 +2,8 @@
 
 In Java, **threads are lightweight execution units** that run inside a process and share the same memory space, enabling concurrent execution and improved performance and responsiveness.
 
+![Threads](../images/Threads.png)
+
 Threads are used to allow a program to execute multiple tasks concurrently within the same process. They improve performance by using multiple CPU cores, keep applications responsive by running long tasks in the background, and are widely used to handle multiple users or requests at the same time (in servers, each client request can be handled by a separate thread). Threads also help organise code by separating different responsibilities such as computation, input/output, and communication.
 
 ## Processes vs Threads
