@@ -13,12 +13,12 @@ In concurrent programming, we are frequently concerned with systems that do not 
 ## Starvation
 Starvation occurs when a process is is unable to gain regular access to shared resources and is unable to make progress.
 
-![Starvation](./images/Starvation.png)
+![Starvation](../images/Starvation.png)
 
 ## Livelock
 - A thread often acts in response to the action of another thread.
 
-![Livelock](./images/Livelock.png)
+![Livelock](../images/Livelock.png)
 
 Livelock occurs when processes continuously change their state in response to each other without making any progress. For example, two processes might continuously yield to each other, preventing either from proceeding.
 
@@ -27,12 +27,12 @@ Livelock occurs when processes continuously change their state in response to ea
 ## Deadlock
 Deadlock occurs when a group of processes are each waiting for another process in the group to release a resource, creating a cycle of dependencies that prevents any of the processes from proceeding. For example, if Process A holds Resource 1 and waits for Resource 2, while Process B holds Resource 2 and waits for Resource 1, neither process can proceed, resulting in a deadlock.
 
-![Deadlock](./images/Deadlock.png)
+![Deadlock](../images/Deadlock.png)
 
 ## Fairness
 Fairness is a property of scheduling algorithms that ensures that all processes get a chance to execute (no one waits forever). A scheduling algorithm is considered fair if it guarantees that every process will eventually be scheduled to run, preventing starvation and ensuring that all processes have an opportunity to make progress.
 
-![Fairness](./images/Fairness.png)
+![Fairness](../images/Fairness.png)
 
 ### Weak Fairness
 Weak fairness, also known as justice, requires that if a process is continuously enabled (i.e., it can execute), then it will eventually be scheduled to run. However, if a process is only intermittently enabled, there is no guarantee that it will ever be scheduled.
