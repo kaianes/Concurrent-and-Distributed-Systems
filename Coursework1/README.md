@@ -1,28 +1,4 @@
-# Coursework
-
-### Undestanding of the context
-
-Betty's Café
-
-2 hour session - cakes, teas, coffees
-
-alternative periods - eating and drinking // playing the piano and listening to music
-
-items of the cafe may become unavailable, if that happens, the costumer has to wait.
-
-meanwhile, the café staff continue to prepare new items
-
-piano: maximum of 2 people can play at the same time
-
-### Threads
-
-- Customers: they will perform actions such as ordering, eating, drinking, playing the piano, and listening to music. They will also have to wait if certain items are unavailable.
-
-- Staff: they will be responsible for preparing items, managing inventory, and ensuring that the café runs smoothly. They will also have to handle customer requests and manage the piano usage.
-
-remember to: 
-- assign a random execution time to each action performed by customers and staff.
-- log portant events.
+# Coursework 1
 
 ## Question 1 
 
@@ -47,3 +23,33 @@ To conclude, it is important to say that even if a deadlock happens, it is possi
 ## Question 3
 
 > Explain how a faulty implementation of this scenario could lead to a deadlock, providing a concrete example. Then propose a suitable strategy to prevent it.
+
+A faulty implementation of the threads responsable for staff and customers could lead to a deadlock if they do not follow a proper locking order when accessing shared resources. This happens beacause deadlock occur when threads are stuck waiting for each other to release these resources, causing a circular wait. In particular, an example that shows how deadlock arises is a context where clients try to order teas and cakes (decreasing the number of available items), while staffs try to access the same components to prepare them (increasing the amount of available elements).
+
+In this scenario, a circular wait is likely to occur if staff A acquires a lock for tea and then waits for a lock for cake, while customer B acquires a lock for cake and then waits for a lock for tea, both threads will be stuck in a deadlock. Consequently, staff A will be waiting for customer B to release the lock for cake, while customer B will be waiting for staff A to release the lock for tea. This circular wait condition leads to a deadlock, as neither thread can proceed until the other releases the resource it holds.
+
+To prevent this, a suitable strategy would be to establish a consistent locking order for all threads. For example, the café could enforce a rule that all threads must acquire locks in the order of tea first, then cake. This way, if staff A acquires the lock for tea, it will not wait for the lock for cake while customer B is holding it, as customer B will also be required to acquire the lock for tea first before acquiring the lock for cake. This removes the circular wait condition, breaking one of the necessary conditions for deadlock.
+
+## Question 4
+
+> Describe how you would design your solution for this scenario. Identify the threads and the main classes that you would define, and explain which concurrency concepts and Java synchronisation mechanisms you would use, and why. Your design must:
+• Ensure mutual exclusion when accessing shared resources;
+• Be free from deadlock and livelock;
+• Incorporate fairness;
+Provide detailed justification for how your design satisfies each of these requirements.
+
+First of all, for my design of the solution for Betty's Café, there would be the class `Buffet` that will represent the shared resources of the café, such as the inventory of cakes, teas, and coffees. This class will have methods for customers to order items and for staff to prepare items. To ensure mutual exclusion when accessing the inventory, I would use a `ReentrantLock` to synchronize access to the shared resource. This guarantees mutual exclusion by ensuring that only one thread access the inventory at a time. 
+
+Additionally, when an item is unavailable, the customer thread will wait until the staff thread prepares the item and updates the inventory, using a `Condition stockChanged` to signal waiting threads when an item becomes available, avoiding the need for busy waiting. Besides that, the availability check and all inventory modifications are performed within the same critical section to ensure atomicity and prevent race conditions.
+
+Secondly, there would be a class `Piano` that represents the shared resource of the piano. This class will have a method for customers to play the piano, and it will use a `Semaphore` to limit the number of customers who can play at the same time to 2. This ensures that the piano is not accessed by more than 2 customers simultaneously, preventing interference and ensuring the correct access control.
+
+As for the threads, there would be a `Customer` thread class that represents the actions of a customer, such as ordering, eating, drinking, playing the piano, and listening to music. This thread will also handle waiting for unavailable items. There will also be a `Staff` thread class that represents the actions of a staff member, such as preparing items.
+
+To control the two-hour session, there would be a class `SessionController`, which would manage the lifecycle of the café session, including starting and ending the session, and ensuring that all threads are properly managed during this time. This class would manage a flag as a  `AtomicBoolean open` used by the staff's threads to determine if the session is still active.
+
+As for preventing deadlock, this design never holds more than one shared resource at a time. This means that customers acquire the `Buffet` lock to only check and atomically take elements from the inventory, then release the lock before proceeding to other operations, such as playing the piano. Besides that, staff threads only use the Buffet lock and never interact with the piano. Therefore, there is no hold-and-wait across multiple resources, eliminating circular wait and making deadlock impossible.
+
+As for livelock prevention, livelock occurs when threads remain active and repeatedly retry operations without making progress (for example, through repeated tryLock attempts). In this design, customers do not actively retry, instead, they block using `stockChanged.await()` until the entire order becomes available. Because waiting is blocking rather than repeatedly retrying, threads do not interfere with each other, livelock is avoided as at least one waiting thread will make progress.
+
+As for fairness, I would use the `Fair` parameter when creating the `ReentrantLock` for the inventory. This ensures that threads acquire locks in the order they requested them, preventing starvation by serving waiting threads in arrival order. That is, with the combination of fair locks and `signalAll()`, all threads are given a fair chance to access the shared resources. Additionally, for the `Semaphore` used for the piano, I would also use a fair semaphore to ensure that customers waiting to play the piano are served in the order they arrived. Overall, this design ensures safety (mutual exclusion) and liveness (progress without deadlock, livelock, or starvation).
