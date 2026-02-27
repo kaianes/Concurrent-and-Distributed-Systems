@@ -2,11 +2,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class Order {
+    // private final - ensures immutability and thread safety, as the order details cannot be changed after creation.
     private final int cakes;
     private final int teas;
     private final int coffees;
 
     public Order(int cakes, int teas, int coffees) {
+
+        // order validation 
         if (cakes < 0 || teas < 0 || coffees < 0) {
             throw new IllegalArgumentException("Order values cannot be negative.");
         }
@@ -34,6 +37,7 @@ public final class Order {
         return cakes > 0;
     }
 
+    // Provides a human-readable description of the order
     public String describe() {
         List<String> parts = new ArrayList<>();
         if (teas > 0) {
@@ -52,6 +56,7 @@ public final class Order {
         return parts.get(0) + " and " + parts.get(1);
     }
 
+    // This help to understand the order when logging and debugging
     public static Order coffeeOnly() {
         return new Order(0, 0, 1);
     }

@@ -20,8 +20,9 @@ public class Buffet {
     }
 
     // Returns true if the order was fulfilled, false if the session is closed before it can be fulfilled.
-    public boolean takeWhenAvailable(Order order, String customerName, SessionController session, Consumer<String> logger)
+    public boolean takeWhenAvailable(Order order, String customerName, CafeSession session, Consumer<String> logger)
             throws InterruptedException {
+        // if a thread is waiting for a for, then either it will get a lock or it will be interrupted by the session closing, in which case it should return false to indicate it was not able to take the order. 
         lock.lockInterruptibly();
         try {
             boolean waitingLogged = false;

@@ -1,27 +1,73 @@
-import javax.swing.SwingUtilities;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 
 public class Main {
+    private static final int INITIAL_CUSTOMERS = 6;
+    private static final int STAFF_COUNT = 3;
+    private static final int INITIAL_CAKES = 2;
+    private static final int INITIAL_TEAS = 2;
+    private static final int INITIAL_COFFEES = 2;
+    private static final long SESSION_DURATION_MS = 60_000L;
+
     public static void main(String[] args) {
-        if (args.length > 0 && "--console".equalsIgnoreCase(args[0])) {
-            runConsoleDemo();
-            return;
+        Consumer<String> logger = System.out::println;
+        CafeSession session = new CafeSession(1.0);
+        Buffet buffet = new Buffet(INITIAL_CAKES, INITIAL_TEAS, INITIAL_COFFEES);
+        Piano piano = new Piano();
+        List<Thread> actors = new ArrayList<>();
+
+        logger.accept("Starting program with " + INITIAL_CUSTOMERS + " clients and " + STAFF_COUNT + " staff");
+        logger.accept(buffet.buffetText());
+
+        ItemType[] roles = {ItemType.TEA, ItemType.CAKE, ItemType.COFFEE};
+        for (int i = 0; i < STAFF_COUNT; i++) {
+            String staffName = "Staff-" + (i + 1);
+            ItemType role = roles[i % roles.length];
+            Thread staffThread = new Thread(new Staff(staffName, role, session, buffet, logger), staffName);
+            actors.add(staffThread);
+            staffThread.start();
         }
 
-        SwingUtilities.invokeLater(() -> {
-            CafeFrame frame = new CafeFrame();
-            frame.setVisible(true);
-        });
-    }
+        for (int i = 0; i < INITIAL_CUSTOMERS; i++) {
+            String customerName = "Client-" + (i + 1);
+            Thread customerThread = new Thread(new Customer(customerName, session, buffet, piano, logger), customerName);
+            actors.add(customerThread);
+            customerThread.start();
+        }
 
-    private static void runConsoleDemo() {
-        SessionController controller = new SessionController(System.out::println);
-        controller.startSession(6, 3, 2, 2, 2, 120_000L, 1.0);
         try {
-            Thread.sleep(121_500L);
+            Thread.sleep(SESSION_DURATION_MS);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         } finally {
-            controller.stopSession();
+            shutdown(session, buffet, actors, logger);
         }
+    }
+
+    private static void shutdown(CafeSession session, Buffet buffet, List<Thread> actors, Consumer<String> logger) {
+        session.close();
+        logger.accept("Session is closing.");
+        buffet.signalClosed();
+
+        for (Thread actor : actors) {
+            actor.interrupt();
+        }
+        for (Thread actor : actors) {
+            try {
+                actor.join(1500L);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+
+        int active = 0;
+        for (Thread actor : actors) {
+            if (actor.isAlive()) {
+                active++;
+            }
+        }
+        logger.accept("Session ended. Active threads=" + active + ".");
     }
 }

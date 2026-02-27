@@ -3,11 +3,11 @@ import java.util.function.Consumer;
 public class Staff implements Runnable {
     private final String name;
     private final ItemType role;
-    private final SessionController session;
+    private final CafeSession session;
     private final Buffet buffet;
     private final Consumer<String> logger;
 
-    public Staff(String name, ItemType role, SessionController session, Buffet buffet, Consumer<String> logger) {
+    public Staff(String name, ItemType role, CafeSession session, Buffet buffet, Consumer<String> logger) {
         this.name = name;
         this.role = role;
         this.session = session;
@@ -16,6 +16,7 @@ public class Staff implements Runnable {
     }
 
     @Override
+    // Implement Runnable - each staff is a separate thread
     public void run() {
         try {
             while (session.isOpen()) {

@@ -1,3 +1,5 @@
+// This file defines the ItemType enum, which represents the different types of items available at Betty's Cafe. Each item type has a singular and plural name for proper grammar in logging and output.
+
 public enum ItemType {
     CAKE("cake", "cakes"),
     TEA("tea", "teas"),

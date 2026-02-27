@@ -3,12 +3,12 @@ import java.util.function.Consumer;
 
 public class Customer implements Runnable {
     private final String name;
-    private final SessionController session;
+    private final CafeSession session;
     private final Buffet buffet;
     private final Piano piano;
     private final Consumer<String> logger;
 
-    public Customer(String name, SessionController session, Buffet buffet, Piano piano, Consumer<String> logger) {
+    public Customer(String name, CafeSession session, Buffet buffet, Piano piano, Consumer<String> logger) {
         this.name = name;
         this.session = session;
         this.buffet = buffet;
@@ -17,14 +17,18 @@ public class Customer implements Runnable {
     }
 
     @Override
+    // The main loop of the customer thread, where it randomly decides to order items, listen to music, or play the piano while the session is open.
     public void run() {
         try {
             while (session.isOpen()) {
+                // Randomly select an action for the customer to perform. (0 to 6)
                 int action = ThreadLocalRandom.current().nextInt(7);
                 switch (action) {
+                    // In acordance with the coursework actions specification
                     case 0 -> {
                         Order order = Order.coffeeOnly();
                         logger.accept(name + " wants " + order.describe() + ".");
+                        // 
                         if (buffet.takeWhenAvailable(order, name, session, logger)) {
                             long ms = session.randomMs(900, 3000);
                             logger.accept(name + " drinks for " + ms + "ms.");
