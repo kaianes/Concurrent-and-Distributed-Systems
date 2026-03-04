@@ -8,7 +8,7 @@ UB Number: 25029204
 
 > Explain the concept of interference in concurrent systems and provide an example of how it could occur within the context of this scenario.
 
-In concurrent systems, interference occurs when multiple threads access shared resources without proper synchronization, causing unexpected or incorrect results. Consequently, the outcome can suffer from interference when different processes try to read and write the same resource, manipulating it wrongly and overwriting data. For example, in Betty's Café, if two customers try to order the last slice of cake at the same time, without proper synchronization, both customers might end up being served the same slice, leading to a conflict and an incorrect output of the system. Technically speaking, the shared resource (the last slice of cake) is accessed by multiple threads (the customers) without proper coordination, resulting in an inconsistent state. 
+In concurrent systems, interference occurs when multiple threads access shared resources without proper synchronization, causing unexpected or incorrect results. In other words, the outcome can suffer from interference when different processes try to read and write the same resource, manipulating it wrongly and overwriting data. For example, in Betty's Café, if two customers try to order the last slice of cake at the same time, without proper synchronization, both customers might end up being served the same slice, leading to a conflict and an incorrect output of the system. Technically speaking, the shared resource (the last slice of cake) is accessed by multiple threads (the customers) without proper coordination, resulting in an inconsistent state. 
 
 ## Question 2
 
@@ -68,4 +68,20 @@ In conclusion, overall, this design ensures safety (mutual exclusion) and livene
 ## Example of simulation output
 
 ![output-example](../images/CW1-output-example.png)
+
+![output-example](../images/CW1-output-piano.png)
+
+With this output, is it possible to see that the café session starts with 6 clients and 3 staff members. The buffet is initiated with 2 cakes, 2 teas, and 2 coffees. 
+
+Customers are listening to music, ordering items, some are playing the piano, and staff are adding items to the buffet. 
+
+Looking carefully, it is possible to see that the 4th line shows that the first costumer to order an item is Customer 4, who wants tea. Others costumers make their orders as well, but the first customer to succeed is Customer 4, as shown in line 8. Then, the buffet is updated and logged in line 9, that shows the buffet with one less tea. 
+
+The cafe behaviour continues. A important point to notice is that when it is the turn of Customer 6 to take a tea and a cake, the buffet has none tea left, so the customer waits until staff member 1 (line 21) adds more teas to the buffet, as shown in line 30. Then, the customer can finally take the tea and cake, as shown in line 33.
+
+![output-example](../images/CW1-output-session-ended.png)
+
+Finally, the café session ends, as shown in the final output. The buffet is closed and all threads are interrupted, so the program shuts down cleanly.
+
+### References
 
