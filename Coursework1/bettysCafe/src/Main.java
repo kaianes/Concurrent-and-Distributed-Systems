@@ -8,7 +8,8 @@ public class Main {
     private static final int INITIAL_CAKES = 2;
     private static final int INITIAL_TEAS = 2;
     private static final int INITIAL_COFFEES = 2;
-    private static final long SESSION_DURATION_MS = 60_000L;
+    // Session duration in milliseconds (10 seconds)
+    private static final long SESSION_DURATION_MS = 10_000L;
 
     public static void main(String[] args) {
         Consumer<String> logger = System.out::println;

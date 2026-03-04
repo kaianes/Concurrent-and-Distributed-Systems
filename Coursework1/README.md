@@ -64,3 +64,8 @@ As for fairness, both the buffet lock and the piano semaphore were created with 
 
 
 In conclusion, overall, this design ensures safety (mutual exclusion) and liveness (progress without deadlock, livelock, or starvation). The program keeps shared data safe by locking, avoids deadlock by sticking to a single lock, wakes threads properly so they don’t get stuck forever, and treats waiting threads fairly so everyone gets a chance. The result is a simple but correct little simulation where customers and staff peacefully cooperate.
+
+## Example of simulation output
+
+![output-example](../images/CW1-output-example.png)
+
