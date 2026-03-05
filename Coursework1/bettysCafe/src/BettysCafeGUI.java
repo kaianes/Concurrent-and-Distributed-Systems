@@ -1,8 +1,14 @@
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Consumer;
 
 public class BettysCafeGUI {
+    private static final long SESSION_DURATION_MS = 30_000L;
+
     public static void main(String[] args) {
         // Main window setup
         JFrame frame = new JFrame("Betty's Cafe Control");
@@ -20,9 +26,12 @@ public class BettysCafeGUI {
         
         // Define square size for food items
         int itemW = 40; int itemH = 40;
-        addInputRow(leftInput, "Tea", "images/tea.png", 0, itemW, itemH);
-        addInputRow(leftInput, "Cake", "images/cake.png", 1, itemW, itemH);
-        addInputRow(leftInput, "Coffee", "images/coffee.png", 2, itemW, itemH);
+        JTextField teaField = addInputRow(leftInput, "Tea", "images/tea.png", 0, itemW, itemH);
+        JTextField cakeField = addInputRow(leftInput, "Cake", "images/cake.png", 1, itemW, itemH);
+        JTextField coffeeField = addInputRow(leftInput, "Coffee", "images/coffee.png", 2, itemW, itemH);
+        teaField.setText("2");
+        cakeField.setText("2");
+        coffeeField.setText("2");
 
         // Right side: Staff and Customers (Characters look better taller, e.g., 50x80)
         JPanel rightInput = new JPanel(new GridBagLayout());
@@ -30,8 +39,10 @@ public class BettysCafeGUI {
         
         // Define rectangular size for characters to match their aspect ratio
         int charW = 50; int charH = 80;
-        addInputRow(rightInput, "Customers", "images/costumer.png", 0, charW, charH);
-        addInputRow(rightInput, "Staff", "images/staff.png", 1, charW, charH);
+        JTextField customersField = addInputRow(rightInput, "Customers", "images/costumer.png", 0, charW, charH);
+        JTextField staffField = addInputRow(rightInput, "Staff", "images/staff.png", 1, charW, charH);
+        customersField.setText("6");
+        staffField.setText("3");
 
         topPanel.add(leftInput);
         topPanel.add(rightInput);
@@ -70,6 +81,97 @@ public class BettysCafeGUI {
         frame.add(centerPanel, BorderLayout.CENTER);
         frame.add(bottomPanel, BorderLayout.SOUTH);
 
+        // Runtime state shared by button actions.
+        List<Thread> actors = Collections.synchronizedList(new ArrayList<>());
+        final CafeSession[] sessionRef = new CafeSession[1];
+        final Buffet[] buffetRef = new Buffet[1];
+        final Piano[] pianoRef = new Piano[1];
+        final int[] nextCustomerId = new int[1];
+
+        startButton.addActionListener(e -> {
+            if (sessionRef[0] != null && sessionRef[0].isOpen()) {
+                appendLine(outputArea, "Session is already running.");
+                return;
+            }
+
+            int teas = parseNonNegative(teaField.getText(), 2);
+            int cakes = parseNonNegative(cakeField.getText(), 2);
+            int coffees = parseNonNegative(coffeeField.getText(), 2);
+            int customerCount = parseNonNegative(customersField.getText(), 6);
+            int staffCount = parseNonNegative(staffField.getText(), 3);
+
+            // 50 = normal speed. Lower = much slower. Higher = much faster.
+            double speedMultiplier = sliderToMultiplier(speedSlider.getValue());
+
+            CafeSession session = new CafeSession(speedMultiplier);
+            Buffet buffet = new Buffet(cakes, teas, coffees);
+            Piano piano = new Piano();
+            Consumer<String> logger = message -> SwingUtilities.invokeLater(() -> appendLine(outputArea, message));
+
+            outputArea.setText("");
+            synchronized (actors) {
+                actors.clear();
+            }
+            sessionRef[0] = session;
+            buffetRef[0] = buffet;
+            pianoRef[0] = piano;
+            nextCustomerId[0] = customerCount + 1;
+
+            startButton.setEnabled(false);
+            appendLine(outputArea, "Starting program with " + customerCount + " clients and " + staffCount + " staff");
+            appendLine(outputArea, buffet.buffetText());
+
+            Thread runner = new Thread(() -> {
+                try {
+                    ItemType[] roles = {ItemType.TEA, ItemType.CAKE, ItemType.COFFEE};
+                    for (int i = 0; i < staffCount; i++) {
+                        String staffName = "Staff-" + (i + 1);
+                        ItemType role = roles[i % roles.length];
+                        Thread staffThread = new Thread(new Staff(staffName, role, session, buffet, logger), staffName);
+                        actors.add(staffThread);
+                        staffThread.start();
+                    }
+
+                    for (int i = 0; i < customerCount; i++) {
+                        String customerName = "Client-" + (i + 1);
+                        Thread customerThread = new Thread(new Customer(customerName, session, buffet, piano, logger), customerName);
+                        actors.add(customerThread);
+                        customerThread.start();
+                    }
+
+                    Thread.sleep(SESSION_DURATION_MS);
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                } finally {
+                    shutdown(session, buffet, actors, logger);
+                    sessionRef[0] = null;
+                    buffetRef[0] = null;
+                    pianoRef[0] = null;
+                    SwingUtilities.invokeLater(() -> startButton.setEnabled(true));
+                }
+            }, "Cafe-Runner");
+
+            runner.start();
+        });
+
+        addCustomerBtn.addActionListener(e -> {
+            CafeSession session = sessionRef[0];
+            Buffet buffet = buffetRef[0];
+            Piano piano = pianoRef[0];
+
+            if (session == null || buffet == null || piano == null || !session.isOpen()) {
+                appendLine(outputArea, "Start the session first.");
+                return;
+            }
+
+            String customerName = "Client-" + nextCustomerId[0]++;
+            Consumer<String> logger = message -> SwingUtilities.invokeLater(() -> appendLine(outputArea, message));
+            Thread customerThread = new Thread(new Customer(customerName, session, buffet, piano, logger), customerName);
+            actors.add(customerThread);
+            customerThread.start();
+            appendLine(outputArea, customerName + " added.");
+        });
+
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
@@ -78,7 +180,7 @@ public class BettysCafeGUI {
      * Updated helper method to create input rows, now accepting custom width and height
      * for the icon to preserve aspect ratio.
      */
-    private static void addInputRow(JPanel panel, String labelText, String imgPath, int row, int imgWidth, int imgHeight) {
+    private static JTextField addInputRow(JPanel panel, String labelText, String imgPath, int row, int imgWidth, int imgHeight) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.WEST;
@@ -98,6 +200,64 @@ public class BettysCafeGUI {
         panel.add(label, gbc);
 
         gbc.gridx = 1;
-        panel.add(new JTextField(5), gbc);
+        JTextField field = new JTextField(5);
+        panel.add(field, gbc);
+        return field;
+    }
+
+    private static int parseNonNegative(String text, int defaultValue) {
+        try {
+            return Math.max(0, Integer.parseInt(text.trim()));
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
+
+    private static double sliderToMultiplier(int sliderValue) {
+        int value = Math.max(0, Math.min(100, sliderValue));
+        if (value == 50) {
+            return 1.0;
+        }
+        if (value < 50) {
+            // 0 -> 10x slower, 50 -> normal
+            return 1.0 + ((50 - value) / 50.0) * 9.0;
+        }
+        // 50 -> normal, 100 -> 10x faster
+        return 1.0 - ((value - 50) / 50.0) * 0.9;
+    }
+
+    private static void appendLine(JTextArea area, String text) {
+        area.append(text + System.lineSeparator());
+        area.setCaretPosition(area.getDocument().getLength());
+    }
+
+    private static void shutdown(CafeSession session, Buffet buffet, List<Thread> actors, Consumer<String> logger) {
+        session.close();
+        logger.accept("Session is closing.");
+        buffet.signalClosed();
+
+        synchronized (actors) {
+            for (Thread actor : actors) {
+                actor.interrupt();
+            }
+            for (Thread actor : actors) {
+                try {
+                    actor.join(1500L);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        }
+
+        int active = 0;
+        synchronized (actors) {
+            for (Thread actor : actors) {
+                if (actor.isAlive()) {
+                    active++;
+                }
+            }
+        }
+        logger.accept("Session ended. Active threads=" + active + ".");
     }
 }

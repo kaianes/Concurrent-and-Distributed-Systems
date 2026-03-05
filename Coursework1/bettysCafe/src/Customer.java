@@ -91,7 +91,7 @@ public class Customer implements Runnable {
                     }
                 }
                 if (session.isOpen()) {
-                    Thread.sleep(ThreadLocalRandom.current().nextLong(150L, 500L));
+                    Thread.sleep(session.randomMs(150, 500));
                 }
             }
         } catch (InterruptedException e) {
