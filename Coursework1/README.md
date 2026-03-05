@@ -8,15 +8,15 @@ UB Number: 25029204
 
 > Explain the concept of interference in concurrent systems and provide an example of how it could occur within the context of this scenario.
 
-In concurrent systems, interference occurs when multiple threads access shared resources without proper synchronization, causing unexpected or incorrect results. In other words, the outcome can suffer from interference when different processes try to read and write the same resource, manipulating it wrongly and overwriting data. For example, in Betty's Café, if two customers try to order the last slice of cake at the same time, without proper synchronization, both customers might end up being served the same slice, leading to a conflict and an incorrect output of the system. Technically speaking, the shared resource (the last slice of cake) is accessed by multiple threads (the customers) without proper coordination, resulting in an inconsistent state. 
+In concurrent systems, interference occurs when multiple threads access shared resources without proper synchronization, causing unexpected or incorrect results (FRIESEN, 2015). In other words, the outcome can suffer from interference when different processes try to read and write the same resource, manipulating it wrongly and overwriting data. For example, in Betty's Café, if two customers try to order the last slice of cake at the same time, without proper synchronization, both customers might end up being served the same slice, leading to a conflict and an incorrect output of the system. Technically speaking, the shared resource (the last slice of cake) is accessed by multiple threads (the customers) without proper coordination, resulting in an inconsistent state. 
 
 ## Question 2
 
 > Describe what a deadlock is, explaining its causes and the strategies used to avoid it.
 
-A Deadlock is a state in concurrent systems where two or more threads are blocked forever, waiting for each other to release resources to continue their execution. For example, in Betty's Café, if the staff stop to prepare new items and one customer is waiting for a cup of tea while holding the last slice of cake while another customer is waiting for a slice of cake while holding the last cup of tea, both customers will be stuck in a deadlock, as they are waiting for each other to release the resources they need.
+A Deadlock is a state in concurrent systems where two or more threads are blocked forever, waiting for each other to release resources to continue their execution (Javier Fernandez Gonzalez, 2017). For example, in Betty's Café, if the staff stop to prepare new items and one customer is waiting for a cup of tea while holding the last slice of cake while another customer is waiting for a slice of cake while holding the last cup of tea, both customers will be stuck in a deadlock, as they are waiting for each other to release the resources they need.
 
-For a deadlock to occur, four conditions must be present simultaneously. The first is the "Mutual Exclusion" concept, where only one thread can access a resource at a time. Secondly, the "Hold and Wait" condition explains how a thread  holds one resource and waits for another, still not releasing the one that it already has. The third condition "No Preemption" defines that resources cannot be forcibly taken from threads, and the final one is called  "Circular Wait": a chain of threads exists where each thread is waiting for a resource held by the next thread in the chain. 
+For a deadlock to occur, four conditions must be present simultaneously. The first is the "Mutual Exclusion" concept, where only one thread can access a resource at a time. Secondly, the "Hold and Wait" condition explains how a thread  holds one resource and waits for another, still not releasing the one that it already has. The third condition "No Preemption" defines that resources cannot be forcibly taken from threads, and the final one is called  "Circular Wait": a chain of threads exists where each thread is waiting for a resource held by the next thread in the chain (M Raynal, 2013). 
 
 To avoid deadlocks, it is necessary to break at least one of these conditions. One common approach is to use a lock hierarchy (also known as lock ordering), where all threads acquire locks in a predefined order. This prevents circular wait conditions, as threads will always acquire locks in the same sequence. For example, if the café staff always acquire locks for the tea before acquiring locks for the cake, and customers do the same, it will prevent incorrect manipulation of the items. This is especially important in situations where the order of locks depends on method arguments, such as `getOrder(cake, tea)` and `getOrder(tea, cake)`, which can lead to deadlocks if the locking order changes dynamically.
 
@@ -28,7 +28,7 @@ To conclude, it is important to say that even if a deadlock happens, it is possi
 
 > Explain how a faulty implementation of this scenario could lead to a deadlock, providing a concrete example. Then propose a suitable strategy to prevent it.
 
-A faulty implementation of the threads responsable for staff and customers could lead to a deadlock if they do not follow a proper locking order when accessing shared resources. This happens beacause deadlock occur when threads are stuck waiting for each other to release these resources, causing a circular wait. In particular, an example that shows how deadlock arises is a context where clients try to order teas and cakes (decreasing the number of available items), while staffs try to access the same components to prepare them (increasing the amount of available elements).
+A faulty implementation of the threads responsable for staff and customers could lead to a deadlock if they do not follow a proper locking order when accessing shared resources. This happens beacause deadlock occur when threads are stuck waiting for each other to release these resources, causing a circular wait (Wittman, Mathur and Korb, 2013). In particular, an example that shows how deadlock arises is a context where clients try to order teas and cakes (decreasing the number of available items), while staffs try to access the same components to prepare them (increasing the amount of available elements).
 
 In this scenario, a circular wait is likely to occur if staff A acquires a lock for tea and then waits for a lock for cake, while customer B acquires a lock for cake and then waits for a lock for tea, both threads will be stuck in a deadlock. Consequently, staff A will be waiting for customer B to release the lock for cake, while customer B will be waiting for staff A to release the lock for tea. This circular wait condition leads to a deadlock, as neither thread can proceed until the other releases the resource it holds.
 
@@ -85,3 +85,10 @@ Finally, the café session ends, as shown in the final output. The buffet is clo
 
 ### References
 
+FRIESEN, J. (2015). Java Threads and the Concurrency Utilities. Apress.
+
+Javier Fernandez Gonzalez (2017). Java 9 Concurrency Cookbook -. Packt Publishing Limited.
+
+M Raynal (2013). Concurrent programming : algorithms, principles, and foundations. Heidelberg ; New York: Springer-Verlag.
+
+Wittman, B., Mathur, A. and Korb, T. (2013). Start Concurrent. Pup Department of Computer Science.
