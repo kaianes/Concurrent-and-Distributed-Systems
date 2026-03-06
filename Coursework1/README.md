@@ -1,7 +1,7 @@
 # Coursework 1
 
-Concurrent and Distributed Systems
-
+**COS6012-B**
+**Concurrent and Distributed Systems**
 UB Number: 25029204
 
 ## Question 1 
@@ -75,7 +75,7 @@ With this output, is it possible to see that the café session starts with 6 cli
 
 Customers are listening to music, ordering items, some are playing the piano, and staff are adding items to the buffet. 
 
-Looking carefully, it is possible to see that the 4th line shows that the first costumer to order an item is Customer 4, who wants tea. Others costumers make their orders as well, but the first customer to succeed is Customer 4, as shown in line 8. Then, the buffet is updated and logged in line 9, that shows the buffet with one less tea. 
+Looking carefully, it is possible to see that the 4th line shows that the first costumer to order an item is Customer 4, who wants tea. Others costumers make their orders as well, but the first customer to succeed is Customer 4, as shown in line 8. Then, the buffet is updated and logged in line 10, that shows the buffet with one less tea. 
 
 The cafe behaviour continues. A important point to notice is that when it is the turn of Customer 6 to take a tea and a cake, the buffet has none tea left, so the customer waits until staff member 1 (line 21) adds more teas to the buffet, as shown in line 30. Then, the customer can finally take the tea and cake, as shown in line 33.
 
