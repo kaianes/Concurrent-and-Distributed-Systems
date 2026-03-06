@@ -16,11 +16,11 @@ public class BettysCafeGUI {
         frame.setSize(850, 650);
         frame.setLayout(new BorderLayout(10, 10));
 
-        // --- TOP PANEL (Inputs with icons) ---
+        //  TOP PANEL (Inputs with icons) 
         JPanel topPanel = new JPanel(new GridLayout(1, 2, 20, 0));
         topPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Left side: Item quantities (Item icons look better as squares, e.g., 40x40)
+        // Left side: Item quantities
         JPanel leftInput = new JPanel(new GridBagLayout());
         leftInput.setBorder(BorderFactory.createTitledBorder("Set initial quantities of items!"));
         
@@ -33,11 +33,11 @@ public class BettysCafeGUI {
         cakeField.setText("2");
         coffeeField.setText("2");
 
-        // Right side: Staff and Customers (Characters look better taller, e.g., 50x80)
+        // Right side: Staff and Customers 
         JPanel rightInput = new JPanel(new GridBagLayout());
         rightInput.setBorder(BorderFactory.createTitledBorder("Specify initial number of customers and staff!"));
         
-        // Define rectangular size for characters to match their aspect ratio
+        // Define rectangular size for characters
         int charW = 50; int charH = 80;
         JTextField customersField = addInputRow(rightInput, "Customers", "images/costumer.png", 0, charW, charH);
         JTextField staffField = addInputRow(rightInput, "Staff", "images/staff.png", 1, charW, charH);
@@ -47,7 +47,7 @@ public class BettysCafeGUI {
         topPanel.add(leftInput);
         topPanel.add(rightInput);
 
-        // --- CENTER PANEL (Start Button and Output Area) ---
+        //  CENTER PANEL (Start Button and Output Area) 
         JPanel centerPanel = new JPanel(new BorderLayout(10, 10));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
         
@@ -63,7 +63,7 @@ public class BettysCafeGUI {
         centerPanel.add(startButton, BorderLayout.NORTH);
         centerPanel.add(scroll, BorderLayout.CENTER);
 
-        // --- BOTTOM PANEL (Speed Slider and Extra Actions) ---
+        //  BOTTOM PANEL (Speed Slider and Extra Actions) 
         JPanel bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -176,20 +176,15 @@ public class BettysCafeGUI {
         frame.setVisible(true);
     }
 
-    /**
-     * Updated helper method to create input rows, now accepting custom width and height
-     * for the icon to preserve aspect ratio.
-     */
+    // Helper methods for GUI setup and actions
     private static JTextField addInputRow(JPanel panel, String labelText, String imgPath, int row, int imgWidth, int imgHeight) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.WEST;
 
-        // Attempt to load and scale the image with specific width and height
         JLabel label;
         File imgFile = new File(imgPath);
         if (imgFile.exists()) {
-            // Updated scaling using the new method parameters
             ImageIcon icon = new ImageIcon(new ImageIcon(imgPath).getImage().getScaledInstance(imgWidth, imgHeight, Image.SCALE_SMOOTH));
             label = new JLabel(labelText, icon, JLabel.LEFT);
         } else {
