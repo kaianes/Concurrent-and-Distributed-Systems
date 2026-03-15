@@ -22,6 +22,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+// Aplly colors
+import java.awt.Color;
+import javax.swing.JTextPane;
+import javax.swing.text.StyledDocument;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+
 /**
  * A simple Swing-based client for the chat server. Graphically it is a frame
  * with a text field for entering messages and a textarea to see the whole
@@ -43,7 +50,7 @@ public class ChatClient {
     PrintWriter out;
     JFrame frame = new JFrame("Chatter");
     JTextField textField = new JTextField(50);
-    JTextArea messageArea = new JTextArea(16, 50);
+    private JTextPane messageArea = new JTextPane();
 
     /**
      * Constructs the client by laying out the GUI and registering a listener with
@@ -52,6 +59,22 @@ public class ChatClient {
      * editable, and only becomes editable AFTER the client receives the
      * NAMEACCEPTED message from the server.
      */
+
+    // Helper method to color the text
+    private void appendColored(String text, Color color, boolean bold) {
+        StyledDocument doc = messageArea.getStyledDocument();
+
+        SimpleAttributeSet style = new SimpleAttributeSet();
+        StyleConstants.setForeground(style, color);
+        StyleConstants.setBold(style, bold);
+
+        try {
+            doc.insertString(doc.getLength(), text + "\n", style);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public ChatClient(String serverAddress) {
         this.serverAddress = serverAddress;
 
@@ -88,8 +111,16 @@ public class ChatClient {
                 } else if (line.startsWith("NAMEACCEPTED")) {
                     this.frame.setTitle("Chatter - " + line.substring(13));
                     textField.setEditable(true);
-                } else if (line.startsWith("MESSAGE")) {
-                    messageArea.append(line.substring(8) + "\n");
+                } else if (line.startsWith("SYSTEM ")) {
+                    appendColored(line.substring(7), Color.RED, true);
+                }
+
+                else if (line.startsWith("MESSAGE ")) {
+                    appendColored(line.substring(8), Color.BLUE, false);
+                }
+
+                else if (line.startsWith("PRIVATE ")) {
+                    appendColored(line.substring(8), Color.MAGENTA, true);
                 }
             }
         } finally {

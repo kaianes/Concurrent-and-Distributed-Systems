@@ -112,3 +112,35 @@ The victory is detected in the `hasWinner()` and `boardFilledUp()` methods where
 A broadcast network allows to send the same message from one source to all conected receivers.
 
 ![broadcasting](images/broadcasting.png)
+
+#### Activity 2
+
+With the porpouse to distinguish the system's message from the user's message, new starts were created at the server, such as:
+
+```java
+      for (PrintWriter writer : writers) {
+            writer.println("SYSTEM  " + name + " has left");
+      }
+```
+
+At the client, a new helper method was created to print colored text with another message componet `JTextPane()`.
+
+and the message handling was updated:
+
+```java
+else if (line.startsWith("SYSTEM ")) {
+    appendColored(line.substring(7), Color.GRAY, true);
+}
+
+else if (line.startsWith("MESSAGE ")) {
+    appendColored(line.substring(8), Color.BLACK, false);
+}
+
+else if (line.startsWith("PRIVATE ")) {
+    appendColored(line.substring(8), Color.MAGENTA, true);
+}
+```
+
+![ColoredMessage.png](images/ColoredMessage.png)
+
+### Activity 3

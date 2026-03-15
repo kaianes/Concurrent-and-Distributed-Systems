@@ -94,8 +94,9 @@ public class ChatServer {
                 // to the set of all writers so this client can receive broadcast messages.
                 // But BEFORE THAT, let everyone else know that the new person has joined!
                 out.println("NAMEACCEPTED " + name);
+                out.println("SYSTEM Welcome " + name);
                 for (PrintWriter writer : writers) {
-                    writer.println("MESSAGE " + name + " has joined");
+                    writer.println("SYSTEM  " + name + " has joined");
                 }
                 writers.add(out);
 
@@ -119,7 +120,7 @@ public class ChatServer {
                     System.out.println(name + " is leaving");
                     names.remove(name);
                     for (PrintWriter writer : writers) {
-                        writer.println("MESSAGE " + name + " has left");
+                        writer.println("SYSTEM  " + name + " has left");
                     }
                 }
                 try {
