@@ -120,7 +120,7 @@ public class ChatClient {
                 }
 
                 else if (line.startsWith("PRIVATE ")) {
-                    appendColored(line.substring(8), Color.MAGENTA, true);
+                    appendColored("[PRIVATE] " + line.substring(8), Color.MAGENTA, true);
                 }
             }
         } finally {

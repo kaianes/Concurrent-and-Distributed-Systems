@@ -17,6 +17,9 @@ import java.util.HashSet;
 import java.util.Scanner; 
 import java.util.concurrent.Executors;
 
+import java.util.Map;
+import java.util.HashMap;
+
 /**
  * A multithreaded chat room server. When a client connects the server requests
  * a screen name by sending the client the text "SUBMITNAME", and keeps
@@ -30,11 +33,15 @@ import java.util.concurrent.Executors;
  */
 public class ChatServer {
 
+
     // All client names, so we can check for duplicates upon registration.
     private static Set<String> names = new HashSet<>();
 
     // The set of all the print writers for all the clients, used for broadcast.
     private static Set<PrintWriter> writers = new HashSet<>();
+
+    // Private Messages
+    private static Map<String, PrintWriter> userWriters = new HashMap<>();
 
     public static void main(String[] args) throws Exception {
         System.out.println("The chat server is running...");
@@ -99,6 +106,7 @@ public class ChatServer {
                     writer.println("SYSTEM  " + name + " has joined");
                 }
                 writers.add(out);
+                userWriters.put(name, out);
 
                 // Accept messages from this client and broadcast them.
                 while (true) {
@@ -106,8 +114,24 @@ public class ChatServer {
                     if (input.toLowerCase().startsWith("/quit")) {
                         return;
                     }
-                    for (PrintWriter writer : writers) {
-                        writer.println("MESSAGE " + name + ": " + input);
+                    if (input.startsWith("/pm ")) {
+
+                        String[] parts = input.split(" ", 3);
+                        String target = parts[1];
+                        String msg = parts[2];
+
+                        PrintWriter targetWriter = userWriters.get(target);
+
+                        if (targetWriter != null) {
+                            targetWriter.println("PRIVATE " + name + ": " + msg);
+                        }
+
+                    } else {
+
+                        for (PrintWriter writer : writers) {
+                            writer.println("MESSAGE " + name + ": " + input);
+                        }
+
                     }
                 }
             } catch (Exception e) {
