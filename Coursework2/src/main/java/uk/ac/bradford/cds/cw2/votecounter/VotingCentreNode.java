@@ -1,4 +1,4 @@
-package uk.ac.bradford.cds.cw2;
+package uk.ac.bradford.cds.cw2.votecounter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
